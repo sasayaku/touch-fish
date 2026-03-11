@@ -59,4 +59,13 @@
                     factoryClass="cn.luojunhui.touchfish.windwos.BookWindowFactory">
         </toolWindow>
     </extensions>
+
+    <actions>
+        <action id="TouchFish.ToggleAutoPageTurn"
+                class="cn.luojunhui.touchfish.actions.ToggleAutoPageTurnAction"
+                text="切换自动翻页"
+                description="开启/关闭 Touch Fish 自动翻页">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl CAPS_LOCK"/>
+        </action>
+    </actions>
 </idea-plugin>

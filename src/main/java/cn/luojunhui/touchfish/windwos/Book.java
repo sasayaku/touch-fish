@@ -32,6 +32,10 @@ public class Book {
     private JPanel book;
     private JTextPane text;
 
+    /** 当前显示的 Book 实例，供快捷键回调更新自动翻页状态 */
+    static volatile Book currentInstance;
+    private Timer autoPageTurnTimer;
+
     public Book(ToolWindow toolWindow) {
         this.init();
     }
@@ -85,6 +89,52 @@ public class Book {
                 }
             }
         });
+
+        currentInstance = this;
+        updateAutoPageTurnTimer();
+    }
+
+    /**
+     * 根据配置更新自动翻页定时器：若开启则按间隔翻页，若关闭则停止。
+     */
+    void updateAutoPageTurnTimer() {
+        stopAutoPageTurnTimer();
+        BookSettingsState settings = BookSettingsState.getInstance().getState();
+        if (settings == null || !settings.getAutoPageTurnEnabled()) {
+            return;
+        }
+        int seconds = settings.getAutoPageTurnSeconds();
+        if (seconds < 1) {
+            seconds = 1;
+        }
+        int delayMs = seconds * 1000;
+        autoPageTurnTimer = new Timer(delayMs, e -> {
+            BookSettingsState s = BookSettingsState.getInstance().getState();
+            if (s == null || !s.getAutoPageTurnEnabled()) {
+                stopAutoPageTurnTimer();
+                return;
+            }
+            readText(NEXT);
+        });
+        autoPageTurnTimer.setRepeats(true);
+        autoPageTurnTimer.start();
+    }
+
+    private void stopAutoPageTurnTimer() {
+        if (autoPageTurnTimer != null) {
+            autoPageTurnTimer.stop();
+            autoPageTurnTimer = null;
+        }
+    }
+
+    /**
+     * 由快捷键动作调用，使当前 Book 实例根据最新配置更新自动翻页定时器。
+     */
+    public static void applyAutoPageTurnState() {
+        Book instance = currentInstance;
+        if (instance != null) {
+            instance.updateAutoPageTurnTimer();
+        }
     }
 
     /**

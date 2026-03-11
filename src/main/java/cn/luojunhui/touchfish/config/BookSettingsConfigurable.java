@@ -66,9 +66,13 @@ public class BookSettingsConfigurable implements Configurable {
         String inputFilePath = this.bookSettingsComponent.getBookPath();
         int inputPage = this.bookSettingsComponent.getPage();
         int inputPageSize = this.bookSettingsComponent.getPageSize();
+        boolean autoEnabled = this.bookSettingsComponent.isAutoPageTurnEnabled();
+        int autoSeconds = this.bookSettingsComponent.getAutoPageTurnSeconds();
         return !StringUtils.equals(settings.getBookPath(), inputFilePath)
                 || settings.getPage() != inputPage
-                || settings.getPageSize() != inputPageSize;
+                || settings.getPageSize() != inputPageSize
+                || !settings.getAutoPageTurnEnabled().equals(autoEnabled)
+                || !Integer.valueOf(settings.getAutoPageTurnSeconds()).equals(autoSeconds);
     }
 
     /**
@@ -88,6 +92,8 @@ public class BookSettingsConfigurable implements Configurable {
         settings.setBookPath(this.bookSettingsComponent.getBookPath());
         settings.setPage(this.bookSettingsComponent.getPage());
         settings.setPageSize(this.bookSettingsComponent.getPageSize());
+        settings.setAutoPageTurnEnabled(this.bookSettingsComponent.isAutoPageTurnEnabled());
+        settings.setAutoPageTurnSeconds(this.bookSettingsComponent.getAutoPageTurnSeconds());
         // 更新文本内容
         List<String> lines;
         try {
@@ -109,9 +115,13 @@ public class BookSettingsConfigurable implements Configurable {
         String bookPath = Optional.of(settings).map(s->s.getBookPath()).orElse("");
         int page = Optional.of(settings).map(s->s.getPage()).orElse(1);
         int pageSize = Optional.of(settings).map(s->s.getPageSize()).orElse(5);
+        boolean autoEnabled = Optional.of(settings).map(BookSettingsState::getAutoPageTurnEnabled).orElse(false);
+        int autoSeconds = Optional.of(settings).map(BookSettingsState::getAutoPageTurnSeconds).orElse(5);
         this.bookSettingsComponent.setBookPath(bookPath);
         this.bookSettingsComponent.setPage(page);
         this.bookSettingsComponent.setPageSize(pageSize);
+        this.bookSettingsComponent.setAutoPageTurnEnabled(autoEnabled);
+        this.bookSettingsComponent.setAutoPageTurnSeconds(autoSeconds);
     }
 
     /**

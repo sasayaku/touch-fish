@@ -44,6 +44,14 @@ public class BookSettingsState implements PersistentStateComponent<BookSettingsS
      * txt内容，当文本内容过大时，会占用很多内存，建议分割成多个txt文件
      */
     private List<String> lines = new ArrayList<>();
+    /**
+     * 自动翻页是否开启
+     */
+    private Boolean autoPageTurnEnabled = false;
+    /**
+     * 自动翻页间隔（秒）
+     */
+    private Integer autoPageTurnSeconds = 5;
 
     /**
      * 获取配置实例
@@ -103,5 +111,21 @@ public class BookSettingsState implements PersistentStateComponent<BookSettingsS
 
     public void setLines(List<String> lines) {
         this.lines = lines;
+    }
+
+    public Boolean getAutoPageTurnEnabled() {
+        return autoPageTurnEnabled != null ? autoPageTurnEnabled : false;
+    }
+
+    public void setAutoPageTurnEnabled(Boolean autoPageTurnEnabled) {
+        this.autoPageTurnEnabled = autoPageTurnEnabled;
+    }
+
+    public Integer getAutoPageTurnSeconds() {
+        return autoPageTurnSeconds != null && autoPageTurnSeconds > 0 ? autoPageTurnSeconds : 5;
+    }
+
+    public void setAutoPageTurnSeconds(Integer autoPageTurnSeconds) {
+        this.autoPageTurnSeconds = autoPageTurnSeconds;
     }
 }
