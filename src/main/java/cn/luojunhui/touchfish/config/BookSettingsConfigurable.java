@@ -66,7 +66,7 @@ public class BookSettingsConfigurable implements Configurable {
         String inputFilePath = this.bookSettingsComponent.getBookPath();
         int inputPage = this.bookSettingsComponent.getPage();
         int inputPageSize = this.bookSettingsComponent.getPageSize();
-        return !StringUtils.equals(settings.getBookPath().trim(), inputFilePath)
+        return !StringUtils.equals(settings.getBookPath(), inputFilePath)
                 || settings.getPage() != inputPage
                 || settings.getPageSize() != inputPageSize;
     }

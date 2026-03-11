@@ -38,7 +38,7 @@ public class BookSettingsComponent {
         BookSettingsState settings = BookSettingsState.getInstance().getState();
         String bookPath = settings.getBookPath();
         if (StringUtil.isNotEmpty(bookPath)) {
-            this.setBookPath(bookPath.trim());
+            this.setBookPath(bookPath);
             this.setPage(settings.getPage());
             this.setPageSize(settings.getPageSize());
         }

@@ -11,6 +11,8 @@ import com.intellij.openapi.wm.ToolWindow;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,6 +70,19 @@ public class Book {
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
+            }
+        });
+
+        // 滚轮翻页：向下滚动下一页，向上滚动上一页
+        this.text.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int rotation = e.getWheelRotation();
+                if (rotation > 0) {
+                    readText(NEXT);
+                } else if (rotation < 0) {
+                    readText(PREV);
+                }
             }
         });
     }
