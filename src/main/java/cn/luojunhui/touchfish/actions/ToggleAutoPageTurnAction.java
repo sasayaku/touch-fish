@@ -14,12 +14,9 @@ public class ToggleAutoPageTurnAction extends AnAction implements DumbAware {
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
+        // getState() 返回单例自身，勿再 loadState(自己)：XmlSerializerUtil.copyBean(this,this) 易导致状态异常
         BookSettingsState settings = BookSettingsState.getInstance();
-        BookSettingsState state = settings.getState();
-        if (state != null) {
-            state.setAutoPageTurnEnabled(!state.getAutoPageTurnEnabled());
-            settings.loadState(state);
-        }
+        settings.setAutoPageTurnEnabled(!settings.getAutoPageTurnEnabled());
         Book.applyAutoPageTurnState();
     }
 }
